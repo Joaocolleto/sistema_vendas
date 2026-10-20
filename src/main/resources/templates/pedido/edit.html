@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Pedido – Sistema de Vendas</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/pedidos}">Sistema de Vendas</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/clientes}">Clientes</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/produtos}">Produtos</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/pedidos}">Pedidos</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item d-flex align-items-center me-3">
+                    <span class="text-white-50 small">Olá, <strong class="text-white" sec:authentication="name">Usuário</strong></span>
+                </li>
+                <li class="nav-item"><a class="nav-link text-danger fw-semibold" th:href="@{/logout}">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mb-5">
+
+    <!-- Navegação de Retorno -->
+    <div class="mb-3">
+        <a th:href="@{/pedidos}" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Voltar para a lista de Pedidos
+        </a>
+    </div>
+
+    <!-- Banner de Status Especial -->
+    <div th:if="${pedido.status.name() == 'CANCELADO'}" class="alert alert-danger d-flex align-items-center gap-2 mb-4 shadow-sm border-0" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill text-danger" viewBox="0 0 16 16">
+            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        <div>
+            <strong>Pedido Cancelado:</strong> Este pedido encontra-se cancelado e os itens retornaram ao estoque.
+        </div>
+    </div>
+
+    <div th:if="${pedido.status.name() == 'ENTREGUE'}" class="alert alert-success d-flex align-items-center gap-2 mb-4 shadow-sm border-0" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </svg>
+        <div>
+            <strong>Pedido Entregue:</strong> Este pedido foi finalizado com sucesso.
+        </div>
+    </div>
+
+    <!-- Cabeçalho Principal do Pedido -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-3">
+                    <h2 class="fw-bold mb-0 text-dark">Pedido #<span th:text="${pedido.id}"></span></h2>
+                    <span class="badge px-3 py-2 rounded-pill fs-6 fw-semibold text-uppercase"
+                          th:classappend="${pedido.status.name() == 'ATIVO' ? 'bg-primary' : (pedido.status.name() == 'ENTREGUE' ? 'bg-success' : (pedido.status.name() == 'CANCELADO' ? 'bg-danger' : 'bg-warning text-dark'))}"
+                          th:text="${pedido.status}">
+                    </span>
+                </div>
+                <p class="text-muted small mb-0 mt-1">Gerenciamento e detalhes do pedido</p>
+            </div>
+
+            <!-- Botões de Ação no Topo -->
+            <div class="d-flex gap-2">
+                <!-- Opção de Cancelar Pedido (visível para qualquer pedido não cancelado) -->
+                <a th:if="${pedido.status.name() != 'CANCELADO'}"
+                   th:href="@{/pedidos/cancelar/{id}(id=${pedido.id})}"
+                   class="btn btn-outline-danger d-inline-flex align-items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                    Cancelar Pedido
+                </a>
+
+                <!-- Finalizar Pedido (somente para ATIVO) -->
+                <form th:if="${pedido.status.name() == 'ATIVO'}" th:action="@{/pedidos/{id}/finalizar(id=${pedido.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-success d-inline-flex align-items-center gap-2" th:disabled="${#lists.isEmpty(pedido.itens)}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                            <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                            <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+                        </svg>
+                        Finalizar Pedido
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards de Resumo e Métricas -->
+    <div class="row g-3 mb-4">
+        <!-- Card Cliente -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-bold text-uppercase d-block">Cliente</span>
+                            <h5 class="fw-bold mb-0 text-dark" th:text="${pedido.cliente.nomeCompleto}">Nome do Cliente</h5>
+                        </div>
+                    </div>
+                    <div class="small text-muted border-top pt-2">
+                        <div th:text="${pedido.cliente.email}">cliente@email.com</div>
+                        <div th:if="${pedido.cliente.telefone != null}" th:text="${pedido.cliente.telefone}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Data da Compra -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-2 me-3 text-info d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                                <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-bold text-uppercase d-block">Data do Pedido</span>
+                            <h5 class="fw-bold mb-0 text-dark" th:text="${#temporals.format(pedido.dataPedido, 'dd/MM/yyyy')}">15/10/2026</h5>
+                        </div>
+                    </div>
+                    <div class="small text-muted border-top pt-2">
+                        Horário: <strong class="text-dark" th:text="${#temporals.format(pedido.dataPedido, 'HH:mm')}">18:43</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Valor Total -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3 text-success d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-bold text-uppercase d-block">Valor Total</span>
+                            <h4 class="fw-bold mb-0 text-primary" th:text="${#numbers.formatCurrency(pedido.valorTotal)}">R$ 0,00</h4>
+                        </div>
+                    </div>
+                    <div class="small text-muted border-top pt-2" th:text="${#lists.size(pedido.itens) + ' item(ns) no pedido'}">
+                        0 item(ns) no pedido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicionar Item (Apenas para pedidos ATIVOS) -->
+    <div class="card shadow-sm border-0 mb-4" th:if="${pedido.status.name() == 'ATIVO'}">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-circle text-primary" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                Adicionar Produto ao Pedido
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <form th:action="@{/pedidos/{id}/adicionar-item(id=${pedido.id})}" method="post" class="row g-3 align-items-end">
+                <div class="col-md-7">
+                    <label for="produtoId" class="form-label fw-semibold">Produto</label>
+                    <select id="produtoId" name="produtoId" class="form-select" required>
+                        <option value="" disabled selected>Selecione um produto...</option>
+                        <option th:each="produto : ${produtos}" 
+                                th:value="${produto.id}" 
+                                th:text="${produto.nome + ' - ' + #numbers.formatCurrency(produto.preco) + ' (Estoque: ' + produto.quantidadeEmEstoque + ')'}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="quantidade" class="form-label fw-semibold">Quantidade</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" value="1" required>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100 fw-medium">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela de Itens do Pedido -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-box-seam text-secondary" viewBox="0 0 16 16">
+                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                </svg>
+                Itens do Pedido
+            </h5>
+            <span class="badge bg-light text-secondary border px-3 py-2" th:text="${#lists.size(pedido.itens) + ' item(ns)'}"></span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-secondary text-uppercase small">Produto</th>
+                            <th class="py-3 text-center text-secondary text-uppercase small">Quantidade</th>
+                            <th class="py-3 text-end text-secondary text-uppercase small">Preço Unitário</th>
+                            <th class="py-3 text-end text-secondary text-uppercase small">Subtotal</th>
+                            <th class="py-3 text-center text-secondary text-uppercase small pe-4" th:if="${pedido.status.name() == 'ATIVO'}">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${pedido.itens}">
+                            <td class="ps-4 py-3">
+                                <span class="fw-semibold text-dark" th:text="${item.produto.nome}">Nome do Produto</span>
+                            </td>
+                            <td class="text-center py-3">
+                                <span class="badge bg-light text-dark border px-3 py-1" th:text="${item.quantidade}">1</span>
+                            </td>
+                            <td class="text-end py-3 text-muted" th:text="${#numbers.formatCurrency(item.precoUnitario)}">R$ 0,00</td>
+                            <td class="text-end py-3 fw-bold text-dark" th:text="${#numbers.formatCurrency(item.precoUnitario * item.quantidade)}">R$ 0,00</td>
+                            <td class="text-center py-3 pe-4" th:if="${pedido.status.name() == 'ATIVO'}">
+                                <form th:action="@{/pedidos/{pedidoId}/remover-item/{itemId}(pedidoId=${pedido.id}, itemId=${item.id})}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Remover item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(pedido.itens)}">
+                            <td th:colspan="${pedido.status.name() == 'ATIVO' ? 5 : 4}" class="text-center py-5 text-muted">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-cart-x text-muted" viewBox="0 0 16 16">
+                                      <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793 7.354 5.646z"/>
+                                      <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                </div>
+                                Nenhum item adicionado ao pedido.
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot th:if="${not #lists.isEmpty(pedido.itens)}" class="table-light">
+                        <tr>
+                            <th class="ps-4 py-3" colspan="3">Total Geral</th>
+                            <th class="py-3 text-end text-primary fs-5 fw-bold" th:text="${#numbers.formatCurrency(pedido.valorTotal)}"></th>
+                            <th th:if="${pedido.status.name() == 'ATIVO'}"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botões Inferiores -->
+    <div class="d-flex justify-content-between align-items-center">
+        <a th:href="@{/pedidos}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Voltar para Pedidos
+        </a>
+
+        <!-- Botão Cancelar Pedido no rodapé para facilidade de acesso -->
+        <a th:if="${pedido.status.name() != 'CANCELADO'}"
+           th:href="@{/pedidos/cancelar/{id}(id=${pedido.id})}"
+           class="btn btn-outline-danger d-inline-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            Cancelar Pedido
+        </a>
+    </div>
+
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

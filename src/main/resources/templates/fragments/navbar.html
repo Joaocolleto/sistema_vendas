@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="navbar-geral">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/pedidos}">Sistema de Vendas</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+
+                    <!-- Apenas ADMIN vê Clientes -->
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/clientes}">Clientes</a>
+                    </li>
+
+                    <!-- Apenas ADMIN vê Produtos -->
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/produtos}">Produtos</a>
+                    </li>
+
+                    <!-- Todos os autenticados veem Pedidos -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/pedidos}">Pedidos</a>
+                    </li>
+
+                </ul>
+
+                <!-- Informações do usuário logado e botão sair -->
+                <ul class="navbar-nav ms-auto" sec:authorize="isAuthenticated()">
+                    <li class="nav-item d-flex align-items-center me-3">
+                        <span class="text-white-50 small">
+                            Olá, <strong class="text-white" sec:authentication="name">Usuário</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-semibold" th:href="@{/logout}">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</body>
+
+</html>
