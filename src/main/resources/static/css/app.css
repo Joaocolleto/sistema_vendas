@@ -3,38 +3,40 @@
    Se o navegador estiver sem internet, o sistema cai nas fontes padrão sem quebrar o layout. */
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap");
 
-/* ---------- Paleta ---------- */
+/* ---------- Paleta ----------
+   Violeta-ultramar (marca), laranja-tangerina (destaque) e tons frios levemente arroxeados nas superfícies.
+   Verde e vermelho ficam reservados ao significado (total de vendas e cancelado/erro). */
 :root,
 [data-bs-theme="light"] {
-    --sv-primary: #0d9488;
-    --sv-primary-hover: #0b8077;
-    --sv-primary-active: #096a62;
-    --sv-primary-rgb: 13, 148, 136;
+    --sv-primary: #5a3df0;
+    --sv-primary-hover: #4a2fd6;
+    --sv-primary-active: #3c25b0;
+    --sv-primary-rgb: 90, 61, 240;
     --sv-on-primary: #ffffff;
-    --sv-accent: #f2a516;
+    --sv-accent: #ff9f1c;
     --sv-danger: #e5484d;
 
-    --sv-bg: #f3f7f6;
+    --sv-bg: #f6f5fb;
     --sv-surface: #ffffff;
-    --sv-surface-2: #f8fbfa;
+    --sv-surface-2: #faf9fe;
     --sv-input-bg: #ffffff;
-    --sv-ink: #0f1f1c;
-    --sv-muted: #5f726c;
-    --sv-border: #e2eae8;
-    --sv-border-strong: #cbd8d4;
-    --sv-hover: #f0f7f5;
-    --sv-total: #047857;
+    --sv-ink: #15132b;
+    --sv-muted: #6a6786;
+    --sv-border: #e6e4f2;
+    --sv-border-strong: #d0cde6;
+    --sv-hover: #f1effb;
+    --sv-total: #0f7b53;
 
     /* Sombras tingidas com o tom do texto: três degraus de elevação */
-    --sv-shadow-xs: 0 1px 2px rgba(15, 31, 28, 0.05);
-    --sv-shadow: 0 1px 2px rgba(15, 31, 28, 0.04), 0 8px 24px -12px rgba(15, 31, 28, 0.12);
-    --sv-shadow-md: 0 2px 4px rgba(15, 31, 28, 0.04), 0 16px 40px -16px rgba(15, 31, 28, 0.2);
-    --sv-shadow-lg: 0 4px 8px rgba(15, 31, 28, 0.06), 0 32px 64px -20px rgba(8, 40, 36, 0.45);
+    --sv-shadow-xs: 0 1px 2px rgba(21, 19, 43, 0.05);
+    --sv-shadow: 0 1px 2px rgba(21, 19, 43, 0.04), 0 8px 24px -12px rgba(21, 19, 43, 0.14);
+    --sv-shadow-md: 0 2px 4px rgba(21, 19, 43, 0.04), 0 16px 40px -16px rgba(21, 19, 43, 0.22);
+    --sv-shadow-lg: 0 4px 8px rgba(21, 19, 43, 0.06), 0 32px 64px -20px rgba(19, 15, 64, 0.5);
 
-    --sv-nav: #0a2f2b;
+    --sv-nav: #130f40;
     --sv-nav-active-bg: #ffffff;
-    --sv-nav-active-ink: #0a2f2b;
-    --sv-auth-base: #083a35;
+    --sv-nav-active-ink: #130f40;
+    --sv-auth-base: #120d45;
 
     --sv-danger-bg: #fef2f2;
     --sv-danger-border: #fecaca;
@@ -42,34 +44,34 @@
 }
 
 [data-bs-theme="dark"] {
-    --sv-primary: #2dd4bf;
-    --sv-primary-hover: #5eead4;
-    --sv-primary-active: #99f6e4;
-    --sv-primary-rgb: 45, 212, 191;
-    --sv-on-primary: #04201c;
-    --sv-accent: #fbbf24;
+    --sv-primary: #a594ff;
+    --sv-primary-hover: #bdb0ff;
+    --sv-primary-active: #d4cbff;
+    --sv-primary-rgb: 165, 148, 255;
+    --sv-on-primary: #120b45;
+    --sv-accent: #ffb84d;
     --sv-danger: #f87171;
 
-    --sv-bg: #08110f;
-    --sv-surface: #0f1c19;
-    --sv-surface-2: #0c1816;
-    --sv-input-bg: #0a1513;
-    --sv-ink: #e7f3f0;
-    --sv-muted: #8fa8a0;
-    --sv-border: #1d2f2a;
-    --sv-border-strong: #2b433c;
-    --sv-hover: #132521;
-    --sv-total: #34d399;
+    --sv-bg: #0d0b1f;
+    --sv-surface: #16132f;
+    --sv-surface-2: #120f28;
+    --sv-input-bg: #0f0c24;
+    --sv-ink: #ecebfa;
+    --sv-muted: #9a97bd;
+    --sv-border: #27234a;
+    --sv-border-strong: #38336a;
+    --sv-hover: #1d1940;
+    --sv-total: #3ddc97;
 
     --sv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
     --sv-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -12px rgba(0, 0, 0, 0.6);
     --sv-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4), 0 18px 44px -16px rgba(0, 0, 0, 0.7);
     --sv-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.5), 0 32px 70px -20px rgba(0, 0, 0, 0.85);
 
-    --sv-nav: #050e0c;
+    --sv-nav: #090719;
     --sv-nav-active-bg: rgba(255, 255, 255, 0.13);
     --sv-nav-active-ink: #ffffff;
-    --sv-auth-base: #030b0a;
+    --sv-auth-base: #05040f;
 
     --sv-danger-bg: rgba(248, 113, 113, 0.1);
     --sv-danger-border: rgba(248, 113, 113, 0.35);
@@ -532,8 +534,8 @@ main.container {
     justify-content: center;
     padding: 1.5rem;
     background:
-        radial-gradient(60rem 38rem at 8% -5%, rgba(94, 234, 212, 0.32), transparent 62%),
-        radial-gradient(48rem 34rem at 100% 105%, rgba(13, 148, 136, 0.7), transparent 62%),
+        radial-gradient(60rem 38rem at 8% -5%, rgba(165, 148, 255, 0.4), transparent 62%),
+        radial-gradient(48rem 34rem at 100% 105%, rgba(90, 61, 240, 0.8), transparent 62%),
         var(--sv-auth-base);
 }
 
