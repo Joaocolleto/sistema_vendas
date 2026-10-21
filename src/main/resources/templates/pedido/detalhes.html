@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalhes do pedido')}"></head>
+<body>
+
+<div th:replace="~{fragments/menu :: menu('pedidos')}"></div>
+
+<main class="container py-4">
+
+    <div class="page-header">
+        <div>
+            <h1>Pedido <span th:text="'#' + ${pedido.id}">#1</span></h1>
+            <p class="subtitle">Detalhes da venda.</p>
+        </div>
+        <a th:href="@{/pedidos}" class="btn btn-outline-secondary">Voltar</a>
+    </div>
+
+    <!-- Informações -->
+    <div class="card mb-4">
+        <div class="card-header">Informações do pedido</div>
+
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="stat-label">Cliente</div>
+                    <div class="stat-value" th:text="${pedido.cliente.nomeCompleto}"></div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="stat-label">E-mail</div>
+                    <div class="stat-value" th:text="${pedido.cliente.email}"></div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-label">Data</div>
+                    <div class="stat-value" th:text="${pedido.dataPedidoFormatada}"></div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-label">Status</div>
+                    <span class="badge rounded-pill"
+                          th:classappend="${pedido.status.name() == 'ATIVO'} ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis'"
+                          th:text="${pedido.status}"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-label">Version</div>
+                    <div class="stat-value" th:text="${pedido.version}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produtos -->
+    <div class="card mb-4">
+        <div class="card-header">Produtos do pedido</div>
+
+        <div th:if="${pedido.itens.empty}" class="empty-state">
+            <h2>Sem produtos</h2>
+            <p class="mb-0">Este pedido não possui produtos.</p>
+        </div>
+
+        <div th:unless="${pedido.itens.empty}" class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço unitário</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="item : ${pedido.itens}">
+                    <td class="fw-semibold" th:text="${item.produto.nome}"></td>
+
+                    <td class="money"
+                        th:text="${#numbers.formatCurrency(item.precoUnitario)}"></td>
+
+                    <td th:text="${item.quantidade}"></td>
+
+                    <td class="money fw-semibold"
+                        th:text="${#numbers.formatCurrency(item.precoUnitario.multiply(T(java.math.BigDecimal).valueOf(item.quantidade.longValue())))}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Total -->
+    <div class="card mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <span class="stat-label mb-0">Total do pedido</span>
+            <span class="stat-total money"
+                  th:text="${#numbers.formatCurrency(pedido.valorTotal)}"></span>
+        </div>
+    </div>
+
+    <!-- Ações -->
+    <div class="d-flex flex-wrap justify-content-between gap-2" th:if="${pedido.status.name() == 'ATIVO'}">
+        <a th:href="@{'/pedidos/edit/' + ${pedido.id}}" class="btn btn-primary">Editar pedido</a>
+        <a th:href="@{'/pedidos/cancelar/' + ${pedido.id}}" class="btn btn-outline-danger">Cancelar pedido</a>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
