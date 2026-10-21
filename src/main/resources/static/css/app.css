@@ -1,4 +1,4 @@
-/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e escuro */
+va/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e escuro */
 
 /* ---------- Paleta ---------- */
 :root,
@@ -16,11 +16,15 @@
     --sv-input-bg: #ffffff;
     --sv-ink: #10231f;
     --sv-muted: #5b7068;
-    --sv-border: #d9e5e2;
+    --sv-border: #dde8e5;
     --sv-border-strong: #c3d3cf;
     --sv-hover: #eef7f5;
     --sv-total: #047857;
-    --sv-shadow: 0 1px 3px rgba(16, 35, 31, 0.07);
+
+    /* Sombras em camadas: uma curta (contato) e uma longa e suave (profundidade) */
+    --sv-shadow-xs: 0 1px 2px rgba(16, 35, 31, 0.06);
+    --sv-shadow: 0 1px 2px rgba(16, 35, 31, 0.05), 0 6px 16px -4px rgba(16, 35, 31, 0.08);
+    --sv-shadow-lg: 0 2px 4px rgba(16, 35, 31, 0.06), 0 18px 44px -10px rgba(16, 35, 31, 0.28);
 
     --sv-nav-from: #0b3b37;
     --sv-nav-to: #115e59;
@@ -47,11 +51,14 @@
     --sv-input-bg: #0b1715;
     --sv-ink: #e5f2ef;
     --sv-muted: #8ca79f;
-    --sv-border: #21352f;
+    --sv-border: #223630;
     --sv-border-strong: #2f4a43;
     --sv-hover: #152a26;
     --sv-total: #34d399;
-    --sv-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+
+    --sv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --sv-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -4px rgba(0, 0, 0, 0.45);
+    --sv-shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.45), 0 22px 50px -10px rgba(0, 0, 0, 0.7);
 
     --sv-nav-from: #06100e;
     --sv-nav-to: #0c1f1c;
@@ -62,6 +69,16 @@
     --sv-danger-bg: rgba(248, 113, 113, 0.1);
     --sv-danger-border: rgba(248, 113, 113, 0.35);
     --sv-danger-ink: #fca5a5;
+}
+
+/* ---------- Escala de bordas arredondadas ----------
+   Elementos pequenos (botões, campos) usam o raio menor; cartões e a tela de login, o maior.
+   Os raios do Bootstrap seguem a mesma escala, então botões, campos e alertas acompanham. */
+:root {
+    --sv-r-sm: 0.625rem;
+    --sv-r-md: 0.875rem;
+    --sv-r-lg: 1.25rem;
+    --sv-r-xl: 1.75rem;
 }
 
 /* Liga a paleta às variáveis do Bootstrap (vale nos dois temas) */
@@ -75,17 +92,36 @@
     --bs-body-bg: var(--sv-bg);
     --bs-body-color: var(--sv-ink);
     --bs-border-color: var(--sv-border);
-    --bs-border-radius: 0.6rem;
+    --bs-border-radius: var(--sv-r-sm);
+    --bs-border-radius-sm: 0.5rem;
+    --bs-border-radius-lg: var(--sv-r-md);
     --bs-body-font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body { min-height: 100vh; }
 
+/* Mais respiro no conteúdo principal (a classe py-4 do HTML usa !important) */
+main.container {
+    padding-top: 2.25rem !important;
+    padding-bottom: 3.5rem !important;
+}
+
 .text-secondary,
 .text-muted { color: var(--sv-muted) !important; }
 
 /* ---------- Botões ---------- */
-.btn { font-weight: 500; border-radius: 0.6rem; }
+.btn {
+    font-weight: 500;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+                box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.btn:not(.btn-sm):not(.btn-lg) {
+    --bs-btn-padding-y: 0.55rem;
+    --bs-btn-padding-x: 1.15rem;
+}
+
+.btn:active { transform: translateY(1px); }
 
 .btn-primary {
     --bs-btn-color: var(--sv-on-primary);
@@ -101,7 +137,11 @@ body { min-height: 100vh; }
     --bs-btn-disabled-bg: var(--sv-primary);
     --bs-btn-disabled-border-color: var(--sv-primary);
     --bs-btn-focus-shadow-rgb: var(--sv-primary-rgb);
+    box-shadow: var(--sv-shadow-xs), 0 4px 10px -4px rgba(var(--sv-primary-rgb), 0.55);
 }
+
+.btn-primary:hover { box-shadow: var(--sv-shadow-xs), 0 6px 14px -4px rgba(var(--sv-primary-rgb), 0.6); }
+.btn-primary:active { box-shadow: none; }
 
 .btn-outline-primary {
     --bs-btn-color: var(--sv-primary);
@@ -124,6 +164,8 @@ body { min-height: 100vh; }
     --bs-btn-active-color: var(--sv-ink);
     --bs-btn-active-bg: var(--sv-hover);
     --bs-btn-active-border-color: var(--sv-border-strong);
+    background-color: var(--sv-surface);
+    box-shadow: var(--sv-shadow-xs);
 }
 
 .btn-outline-danger { --bs-btn-border-color: var(--sv-danger-border); }
@@ -131,7 +173,10 @@ body { min-height: 100vh; }
 /* ---------- Menu ---------- */
 .sv-navbar {
     background: linear-gradient(90deg, var(--sv-nav-from) 0%, var(--sv-nav-to) 100%);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.35);
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
 }
 
 .sv-navbar .navbar-brand { font-weight: 700; letter-spacing: 0.01em; }
@@ -139,12 +184,14 @@ body { min-height: 100vh; }
 .sv-navbar .nav-link {
     color: rgba(255, 255, 255, 0.72);
     font-weight: 500;
-    border-radius: 0.5rem;
-    padding: 0.45rem 0.85rem;
+    border-radius: var(--sv-r-sm);
+    padding: 0.5rem 1rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .sv-navbar .nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.09); }
 .sv-navbar .nav-link.active { color: #fff; background: rgba(255, 255, 255, 0.17); }
+.sv-navbar .nav-link:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.7); outline-offset: 2px; }
 
 .brand-logo { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
 
@@ -153,8 +200,8 @@ body { min-height: 100vh; }
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.25rem;
+    height: 2.25rem;
     padding: 0;
 }
 
@@ -178,12 +225,12 @@ body { min-height: 100vh; }
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .page-header h1 { font-size: 1.65rem; font-weight: 700; margin: 0; }
-.page-header .subtitle { margin: 0.2rem 0 0; color: var(--sv-muted); }
+.page-header .subtitle { margin: 0.3rem 0 0; color: var(--sv-muted); }
 
 /* ---------- Cards ---------- */
 .card {
@@ -191,7 +238,7 @@ body { min-height: 100vh; }
     --bs-card-cap-bg: var(--sv-surface);
     --bs-card-color: var(--sv-ink);
     border: 1px solid var(--sv-border);
-    border-radius: 1rem;
+    border-radius: var(--sv-r-lg);
     box-shadow: var(--sv-shadow);
     overflow: hidden;
 }
@@ -200,11 +247,11 @@ body { min-height: 100vh; }
     background: var(--sv-surface);
     border-bottom: 1px solid var(--sv-border);
     font-weight: 600;
-    padding: 0.9rem 1.25rem;
-    border-radius: 1rem 1rem 0 0 !important;
+    padding: 1.1rem 1.5rem;
+    border-radius: 0 !important;
 }
 
-.card-body { padding: 1.25rem; }
+.card-body { padding: 1.5rem; }
 
 .card-danger { border-color: var(--sv-danger-border); }
 .card-danger .card-header {
@@ -216,7 +263,7 @@ body { min-height: 100vh; }
 /* ---------- Indicadores (totais) ---------- */
 .kpi {
     height: 100%;
-    padding: 1rem 1.25rem;
+    padding: 1.15rem 1.4rem;
     border-left: 4px solid var(--sv-primary);
 }
 
@@ -229,11 +276,12 @@ body { min-height: 100vh; }
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--sv-muted);
+    margin-bottom: 0.25rem;
 }
 
 .kpi-value { font-size: 1.6rem; font-weight: 700; line-height: 1.25; font-variant-numeric: tabular-nums; }
 .kpi-value.valor-total { color: var(--sv-total); }
-.kpi-sub { font-size: 0.8rem; color: var(--sv-muted); }
+.kpi-sub { font-size: 0.8rem; color: var(--sv-muted); margin-top: 0.15rem; }
 
 /* ---------- Tabelas ---------- */
 .table {
@@ -255,7 +303,8 @@ body { min-height: 100vh; }
     white-space: nowrap;
 }
 
-.table > :not(caption) > * > * { padding: 0.85rem 1.1rem; }
+.table > :not(caption) > * > * { padding: 1rem 1.25rem; }
+.table > thead > tr > * { padding-top: 0.85rem; padding-bottom: 0.85rem; }
 .table tbody tr:last-child > * { border-bottom: 0; }
 
 .table tfoot td {
@@ -267,13 +316,25 @@ body { min-height: 100vh; }
 .money { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ---------- Formulários ---------- */
-.form-label { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem; }
+.form-label { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.4rem; }
 
 .form-control,
 .form-select {
     background-color: var(--sv-input-bg);
     color: var(--sv-ink);
     border-color: var(--sv-border-strong);
+    box-shadow: var(--sv-shadow-xs);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:not(.form-control-sm):not(.form-control-lg) {
+    padding: 0.6rem 0.9rem;
+}
+
+.form-select:not(.form-select-sm):not(.form-select-lg) {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    padding-left: 0.9rem;
 }
 
 .input-group-text {
@@ -281,6 +342,8 @@ body { min-height: 100vh; }
     color: var(--sv-muted);
     border-color: var(--sv-border-strong);
     font-weight: 600;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
 }
 
 .form-control:focus,
@@ -288,7 +351,7 @@ body { min-height: 100vh; }
     background-color: var(--sv-input-bg);
     color: var(--sv-ink);
     border-color: var(--sv-primary);
-    box-shadow: 0 0 0 0.2rem rgba(var(--sv-primary-rgb), 0.2);
+    box-shadow: 0 0 0 0.25rem rgba(var(--sv-primary-rgb), 0.18);
 }
 
 .form-control::placeholder { color: var(--sv-muted); opacity: 0.7; }
@@ -299,13 +362,28 @@ body { min-height: 100vh; }
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--sv-muted);
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
 }
 
 .form-card { max-width: 760px; }
 
+@media (min-width: 768px) {
+    .form-card .card-body { padding: 2rem; }
+}
+
+/* ---------- Alertas e selos ---------- */
+.alert {
+    border-radius: var(--sv-r-md);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sv-shadow-xs);
+}
+
+.badge { font-weight: 600; letter-spacing: 0.02em; }
+.badge.rounded-pill { padding: 0.45em 0.8em; }
+
 /* ---------- Estados vazios e resumo ---------- */
-.empty-state { padding: 3rem 1.5rem; text-align: center; color: var(--sv-muted); }
+.empty-state { padding: 4rem 1.5rem; text-align: center; color: var(--sv-muted); }
 .empty-state h2 { font-size: 1.15rem; color: var(--sv-ink); font-weight: 600; }
 
 .stat-label {
@@ -318,8 +396,6 @@ body { min-height: 100vh; }
 
 .stat-value { font-size: 1.05rem; font-weight: 600; }
 .stat-total { font-size: 1.6rem; font-weight: 700; color: var(--sv-total); }
-
-.badge { font-weight: 600; letter-spacing: 0.02em; }
 
 /* ---------- Login / logout ---------- */
 .auth-wrap {
@@ -334,17 +410,36 @@ body { min-height: 100vh; }
 
 .auth-card {
     width: 100%;
-    max-width: 410px;
+    max-width: 420px;
     background: var(--sv-surface);
     color: var(--sv-ink);
-    border-radius: 1.25rem;
-    padding: 2.25rem 2rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--sv-r-xl);
+    padding: 2.5rem 2.25rem;
+    box-shadow: var(--sv-shadow-lg);
 }
 
 .auth-card .brand-logo { width: 3.75rem; height: 3.75rem; }
 
 .auth-wrap .theme-toggle-flutuante { position: absolute; top: 1rem; right: 1rem; }
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 575.98px) {
+    main.container { padding-top: 1.5rem !important; }
+    .page-header { margin-bottom: 1.5rem; }
+    .card-body { padding: 1.25rem; }
+    .table > :not(caption) > * > * { padding: 0.85rem 1rem; }
+    .auth-card { padding: 2rem 1.5rem; }
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .form-control,
+    .form-select,
+    .sv-navbar .nav-link { transition: none; }
+    .btn:active { transform: none; }
+}
 
 /* ---------- Impressão (relatório em PDF) ---------- */
 .so-impressao { display: none; }
@@ -357,7 +452,12 @@ body { min-height: 100vh; }
 
     body { background: #fff !important; }
 
+    main.container { padding-top: 0 !important; padding-bottom: 0 !important; }
+
     .card { box-shadow: none !important; break-inside: avoid; }
+    .btn-primary,
+    .btn-outline-secondary,
+    .alert { box-shadow: none !important; }
     .table-responsive { overflow: visible !important; }
     .kpi { border-left-width: 4px; }
 
