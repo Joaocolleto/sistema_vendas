@@ -1,36 +1,40 @@
-va/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e escuro */
+/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e escuro.
+   Fontes: Bricolage Grotesque (títulos e números) + Instrument Sans (texto).
+   Se o navegador estiver sem internet, o sistema cai nas fontes padrão sem quebrar o layout. */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap");
 
 /* ---------- Paleta ---------- */
 :root,
 [data-bs-theme="light"] {
     --sv-primary: #0d9488;
-    --sv-primary-hover: #0f766e;
-    --sv-primary-active: #115e59;
+    --sv-primary-hover: #0b8077;
+    --sv-primary-active: #096a62;
     --sv-primary-rgb: 13, 148, 136;
     --sv-on-primary: #ffffff;
-    --sv-accent: #f59e0b;
+    --sv-accent: #f2a516;
+    --sv-danger: #e5484d;
 
-    --sv-bg: #f1f7f6;
+    --sv-bg: #f3f7f6;
     --sv-surface: #ffffff;
-    --sv-surface-2: #f6fbfa;
+    --sv-surface-2: #f8fbfa;
     --sv-input-bg: #ffffff;
-    --sv-ink: #10231f;
-    --sv-muted: #5b7068;
-    --sv-border: #dde8e5;
-    --sv-border-strong: #c3d3cf;
-    --sv-hover: #eef7f5;
+    --sv-ink: #0f1f1c;
+    --sv-muted: #5f726c;
+    --sv-border: #e2eae8;
+    --sv-border-strong: #cbd8d4;
+    --sv-hover: #f0f7f5;
     --sv-total: #047857;
 
-    /* Sombras em camadas: uma curta (contato) e uma longa e suave (profundidade) */
-    --sv-shadow-xs: 0 1px 2px rgba(16, 35, 31, 0.06);
-    --sv-shadow: 0 1px 2px rgba(16, 35, 31, 0.05), 0 6px 16px -4px rgba(16, 35, 31, 0.08);
-    --sv-shadow-lg: 0 2px 4px rgba(16, 35, 31, 0.06), 0 18px 44px -10px rgba(16, 35, 31, 0.28);
+    /* Sombras tingidas com o tom do texto: três degraus de elevação */
+    --sv-shadow-xs: 0 1px 2px rgba(15, 31, 28, 0.05);
+    --sv-shadow: 0 1px 2px rgba(15, 31, 28, 0.04), 0 8px 24px -12px rgba(15, 31, 28, 0.12);
+    --sv-shadow-md: 0 2px 4px rgba(15, 31, 28, 0.04), 0 16px 40px -16px rgba(15, 31, 28, 0.2);
+    --sv-shadow-lg: 0 4px 8px rgba(15, 31, 28, 0.06), 0 32px 64px -20px rgba(8, 40, 36, 0.45);
 
-    --sv-nav-from: #0b3b37;
-    --sv-nav-to: #115e59;
-    --sv-auth-1: #0b3b37;
-    --sv-auth-2: #0d9488;
-    --sv-auth-3: #5eead4;
+    --sv-nav: #0a2f2b;
+    --sv-nav-active-bg: #ffffff;
+    --sv-nav-active-ink: #0a2f2b;
+    --sv-auth-base: #083a35;
 
     --sv-danger-bg: #fef2f2;
     --sv-danger-border: #fecaca;
@@ -44,41 +48,43 @@ va/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e es
     --sv-primary-rgb: 45, 212, 191;
     --sv-on-primary: #04201c;
     --sv-accent: #fbbf24;
+    --sv-danger: #f87171;
 
-    --sv-bg: #0a1412;
-    --sv-surface: #10201d;
-    --sv-surface-2: #0d1a17;
-    --sv-input-bg: #0b1715;
-    --sv-ink: #e5f2ef;
-    --sv-muted: #8ca79f;
-    --sv-border: #223630;
-    --sv-border-strong: #2f4a43;
-    --sv-hover: #152a26;
+    --sv-bg: #08110f;
+    --sv-surface: #0f1c19;
+    --sv-surface-2: #0c1816;
+    --sv-input-bg: #0a1513;
+    --sv-ink: #e7f3f0;
+    --sv-muted: #8fa8a0;
+    --sv-border: #1d2f2a;
+    --sv-border-strong: #2b433c;
+    --sv-hover: #132521;
     --sv-total: #34d399;
 
     --sv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --sv-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -4px rgba(0, 0, 0, 0.45);
-    --sv-shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.45), 0 22px 50px -10px rgba(0, 0, 0, 0.7);
+    --sv-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -12px rgba(0, 0, 0, 0.6);
+    --sv-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4), 0 18px 44px -16px rgba(0, 0, 0, 0.7);
+    --sv-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.5), 0 32px 70px -20px rgba(0, 0, 0, 0.85);
 
-    --sv-nav-from: #06100e;
-    --sv-nav-to: #0c1f1c;
-    --sv-auth-1: #04100e;
-    --sv-auth-2: #0b3b37;
-    --sv-auth-3: #0f766e;
+    --sv-nav: #050e0c;
+    --sv-nav-active-bg: rgba(255, 255, 255, 0.13);
+    --sv-nav-active-ink: #ffffff;
+    --sv-auth-base: #030b0a;
 
     --sv-danger-bg: rgba(248, 113, 113, 0.1);
     --sv-danger-border: rgba(248, 113, 113, 0.35);
     --sv-danger-ink: #fca5a5;
 }
 
-/* ---------- Escala de bordas arredondadas ----------
-   Elementos pequenos (botões, campos) usam o raio menor; cartões e a tela de login, o maior.
-   Os raios do Bootstrap seguem a mesma escala, então botões, campos e alertas acompanham. */
+/* ---------- Escalas de forma e tipografia ---------- */
 :root {
-    --sv-r-sm: 0.625rem;
-    --sv-r-md: 0.875rem;
-    --sv-r-lg: 1.25rem;
-    --sv-r-xl: 1.75rem;
+    --sv-r-sm: 0.75rem;   /* campos de formulário */
+    --sv-r-md: 0.9rem;    /* alertas */
+    --sv-r-lg: 1.25rem;   /* cartões de dados */
+    --sv-r-xl: 1.75rem;   /* login */
+
+    --sv-font-display: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sv-font-body: "Instrument Sans", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Liga a paleta às variáveis do Bootstrap (vale nos dois temas) */
@@ -93,17 +99,28 @@ va/* Tema do Sistema de Vendas: camada sobre o Bootstrap 5.3 com modo claro e es
     --bs-body-color: var(--sv-ink);
     --bs-border-color: var(--sv-border);
     --bs-border-radius: var(--sv-r-sm);
-    --bs-border-radius-sm: 0.5rem;
+    --bs-border-radius-sm: 0.6rem;
     --bs-border-radius-lg: var(--sv-r-md);
-    --bs-body-font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --bs-body-font-family: var(--sv-font-body);
+    --bs-body-font-size: 0.95rem;
+    --bs-body-line-height: 1.55;
 }
 
-body { min-height: 100vh; }
+body {
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--sv-font-display);
+    letter-spacing: -0.015em;
+}
 
 /* Mais respiro no conteúdo principal (a classe py-4 do HTML usa !important) */
 main.container {
-    padding-top: 2.25rem !important;
-    padding-bottom: 3.5rem !important;
+    padding-top: 2.5rem !important;
+    padding-bottom: 4rem !important;
 }
 
 .text-secondary,
@@ -111,14 +128,25 @@ main.container {
 
 /* ---------- Botões ---------- */
 .btn {
-    font-weight: 500;
+    --bs-btn-padding-y: 0.6rem;
+    --bs-btn-padding-x: 1.3rem;
+    --bs-btn-font-size: 0.95rem;
+    border-radius: 50rem;
+    font-weight: 600;
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
                 box-shadow 0.15s ease, transform 0.1s ease;
 }
 
-.btn:not(.btn-sm):not(.btn-lg) {
-    --bs-btn-padding-y: 0.55rem;
-    --bs-btn-padding-x: 1.15rem;
+.btn-sm {
+    --bs-btn-padding-y: 0.38rem;
+    --bs-btn-padding-x: 0.95rem;
+    --bs-btn-font-size: 0.85rem;
+}
+
+.btn-lg {
+    --bs-btn-padding-y: 0.85rem;
+    --bs-btn-padding-x: 1.6rem;
+    --bs-btn-font-size: 1.02rem;
 }
 
 .btn:active { transform: translateY(1px); }
@@ -137,26 +165,31 @@ main.container {
     --bs-btn-disabled-bg: var(--sv-primary);
     --bs-btn-disabled-border-color: var(--sv-primary);
     --bs-btn-focus-shadow-rgb: var(--sv-primary-rgb);
-    box-shadow: var(--sv-shadow-xs), 0 4px 10px -4px rgba(var(--sv-primary-rgb), 0.55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 16px -8px rgba(var(--sv-primary-rgb), 0.7);
 }
 
-.btn-primary:hover { box-shadow: var(--sv-shadow-xs), 0 6px 14px -4px rgba(var(--sv-primary-rgb), 0.6); }
+.btn-primary:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 20px -8px rgba(var(--sv-primary-rgb), 0.8); }
 .btn-primary:active { box-shadow: none; }
 
 .btn-outline-primary {
     --bs-btn-color: var(--sv-primary);
-    --bs-btn-border-color: rgba(var(--sv-primary-rgb), 0.4);
-    --bs-btn-hover-color: var(--sv-on-primary);
-    --bs-btn-hover-bg: var(--sv-primary);
-    --bs-btn-hover-border-color: var(--sv-primary);
-    --bs-btn-active-color: var(--sv-on-primary);
-    --bs-btn-active-bg: var(--sv-primary-hover);
-    --bs-btn-active-border-color: var(--sv-primary-hover);
+    --bs-btn-border-color: rgba(var(--sv-primary-rgb), 0.35);
+    --bs-btn-hover-color: var(--sv-primary-active);
+    --bs-btn-hover-bg: rgba(var(--sv-primary-rgb), 0.1);
+    --bs-btn-hover-border-color: rgba(var(--sv-primary-rgb), 0.6);
+    --bs-btn-active-color: var(--sv-primary-active);
+    --bs-btn-active-bg: rgba(var(--sv-primary-rgb), 0.16);
+    --bs-btn-active-border-color: var(--sv-primary);
     --bs-btn-focus-shadow-rgb: var(--sv-primary-rgb);
 }
 
+[data-bs-theme="dark"] .btn-outline-primary {
+    --bs-btn-hover-color: var(--sv-primary);
+    --bs-btn-active-color: var(--sv-primary);
+}
+
 .btn-outline-secondary {
-    --bs-btn-color: var(--sv-muted);
+    --bs-btn-color: var(--sv-ink);
     --bs-btn-border-color: var(--sv-border-strong);
     --bs-btn-hover-color: var(--sv-ink);
     --bs-btn-hover-bg: var(--sv-hover);
@@ -165,43 +198,66 @@ main.container {
     --bs-btn-active-bg: var(--sv-hover);
     --bs-btn-active-border-color: var(--sv-border-strong);
     background-color: var(--sv-surface);
-    box-shadow: var(--sv-shadow-xs);
 }
 
-.btn-outline-danger { --bs-btn-border-color: var(--sv-danger-border); }
+.btn-outline-danger {
+    --bs-btn-color: var(--sv-danger);
+    --bs-btn-border-color: var(--sv-danger-border);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--sv-danger);
+    --bs-btn-hover-border-color: var(--sv-danger);
+    --bs-btn-active-bg: var(--sv-danger);
+    --bs-btn-active-border-color: var(--sv-danger);
+}
 
 /* ---------- Menu ---------- */
 .sv-navbar {
-    background: linear-gradient(90deg, var(--sv-nav-from) 0%, var(--sv-nav-to) 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.35);
-    padding-top: 0.65rem;
-    padding-bottom: 0.65rem;
+    background: var(--sv-nav);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 14px 30px -20px rgba(0, 0, 0, 0.6);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
-.sv-navbar .navbar-brand { font-weight: 700; letter-spacing: 0.01em; }
+.sv-navbar .navbar-brand {
+    font-family: var(--sv-font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+}
 
 .sv-navbar .nav-link {
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
-    border-radius: var(--sv-r-sm);
-    padding: 0.5rem 1rem;
+    border-radius: 50rem;
+    padding: 0.5rem 1.1rem;
     transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.sv-navbar .nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.09); }
-.sv-navbar .nav-link.active { color: #fff; background: rgba(255, 255, 255, 0.17); }
-.sv-navbar .nav-link:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.7); outline-offset: 2px; }
+.sv-navbar .nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
 
-.brand-logo { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
+.sv-navbar .nav-link.active {
+    color: var(--sv-nav-active-ink);
+    background: var(--sv-nav-active-bg);
+    font-weight: 600;
+}
+
+.sv-navbar .nav-link:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.75); outline-offset: 2px; }
+
+.sv-navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.25);
+    border-radius: var(--sv-r-sm);
+}
+
+.brand-logo { width: 2.2rem; height: 2.2rem; flex-shrink: 0; }
 
 /* ---------- Botão de tema (claro/escuro) ---------- */
 .theme-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.4rem;
+    height: 2.4rem;
     padding: 0;
 }
 
@@ -223,14 +279,21 @@ main.container {
 .page-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 1rem 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.25rem;
 }
 
-.page-header h1 { font-size: 1.65rem; font-weight: 700; margin: 0; }
-.page-header .subtitle { margin: 0.3rem 0 0; color: var(--sv-muted); }
+.page-header h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.page-header .subtitle { margin: 0.5rem 0 0; color: var(--sv-muted); font-size: 1rem; }
 
 /* ---------- Cards ---------- */
 .card {
@@ -246,12 +309,15 @@ main.container {
 .card-header {
     background: var(--sv-surface);
     border-bottom: 1px solid var(--sv-border);
+    font-family: var(--sv-font-display);
+    font-size: 1.02rem;
     font-weight: 600;
-    padding: 1.1rem 1.5rem;
+    letter-spacing: -0.01em;
+    padding: 1.15rem 1.6rem;
     border-radius: 0 !important;
 }
 
-.card-body { padding: 1.5rem; }
+.card-body { padding: 1.6rem; }
 
 .card-danger { border-color: var(--sv-danger-border); }
 .card-danger .card-header {
@@ -260,28 +326,50 @@ main.container {
     border-bottom-color: var(--sv-danger-border);
 }
 
-/* ---------- Indicadores (totais) ---------- */
+/* ---------- Indicadores (totais) ----------
+   A cor do ponto ao lado do rótulo identifica o tipo do indicador. */
 .kpi {
+    --kpi-c: var(--sv-primary);
     height: 100%;
-    padding: 1.15rem 1.4rem;
-    border-left: 4px solid var(--sv-primary);
+    padding: 1.3rem 1.5rem;
+    border-radius: 1.1rem;
+    box-shadow: var(--sv-shadow-xs);
 }
 
-.kpi.kpi-accent { border-left-color: var(--sv-accent); }
-.kpi.kpi-danger { border-left-color: #ef4444; }
+.kpi.kpi-accent { --kpi-c: var(--sv-accent); }
+.kpi.kpi-danger { --kpi-c: var(--sv-danger); }
 
 .kpi-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--sv-muted);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
-.kpi-value { font-size: 1.6rem; font-weight: 700; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.kpi-label::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--kpi-c);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--kpi-c) 20%, transparent);
+    flex-shrink: 0;
+}
+
+.kpi-value {
+    font-family: var(--sv-font-display);
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
 .kpi-value.valor-total { color: var(--sv-total); }
-.kpi-sub { font-size: 0.8rem; color: var(--sv-muted); margin-top: 0.15rem; }
+.kpi-sub { font-size: 0.85rem; color: var(--sv-muted); margin-top: 0.5rem; }
 
 /* ---------- Tabelas ---------- */
 .table {
@@ -293,18 +381,18 @@ main.container {
 }
 
 .table thead th {
-    background: var(--sv-surface-2);
+    background: transparent;
     color: var(--sv-muted);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 0.82rem;
+    font-weight: 600;
     border-bottom: 1px solid var(--sv-border);
     white-space: nowrap;
 }
 
-.table > :not(caption) > * > * { padding: 1rem 1.25rem; }
-.table > thead > tr > * { padding-top: 0.85rem; padding-bottom: 0.85rem; }
+.table > :not(caption) > * > * { padding: 1.05rem 1rem; }
+.table > :not(caption) > * > *:first-child { padding-left: 1.6rem; }
+.table > :not(caption) > * > *:last-child { padding-right: 1.6rem; }
+.table > thead > tr > * { padding-top: 1rem; padding-bottom: 0.9rem; }
 .table tbody tr:last-child > * { border-bottom: 0; }
 
 .table tfoot td {
@@ -316,59 +404,74 @@ main.container {
 .money { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ---------- Formulários ---------- */
-.form-label { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.4rem; }
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--sv-ink);
+    margin-bottom: 0.45rem;
+}
 
 .form-control,
 .form-select {
     background-color: var(--sv-input-bg);
     color: var(--sv-ink);
     border-color: var(--sv-border-strong);
-    box-shadow: var(--sv-shadow-xs);
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-control:not(.form-control-sm):not(.form-control-lg) {
-    padding: 0.6rem 0.9rem;
+    padding: 0.7rem 1rem;
 }
 
 .form-select:not(.form-select-sm):not(.form-select-lg) {
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem;
-    padding-left: 0.9rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    padding-left: 1rem;
 }
+
+.form-control-lg { padding: 0.85rem 1.1rem; font-size: 1rem; }
 
 .input-group-text {
     background: var(--sv-surface-2);
     color: var(--sv-muted);
     border-color: var(--sv-border-strong);
     font-weight: 600;
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
+
+.form-control:hover:not(:focus):not(:disabled),
+.form-select:hover:not(:focus):not(:disabled) { border-color: var(--sv-muted); }
 
 .form-control:focus,
 .form-select:focus {
     background-color: var(--sv-input-bg);
     color: var(--sv-ink);
     border-color: var(--sv-primary);
-    box-shadow: 0 0 0 0.25rem rgba(var(--sv-primary-rgb), 0.18);
+    box-shadow: 0 0 0 0.28rem rgba(var(--sv-primary-rgb), 0.16);
 }
 
-.form-control::placeholder { color: var(--sv-muted); opacity: 0.7; }
+.form-control::placeholder { color: var(--sv-muted); opacity: 0.6; }
 
 .form-section-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--sv-muted);
-    margin-bottom: 1.1rem;
+    font-family: var(--sv-font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--sv-ink);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid var(--sv-border);
 }
 
-.form-card { max-width: 760px; }
+.form-card {
+    max-width: 780px;
+    border-radius: 1.5rem;
+    box-shadow: var(--sv-shadow-md);
+}
 
 @media (min-width: 768px) {
-    .form-card .card-body { padding: 2rem; }
+    .form-card .card-body { padding: 2.25rem; }
 }
 
 /* ---------- Alertas e selos ---------- */
@@ -376,26 +479,49 @@ main.container {
     border-radius: var(--sv-r-md);
     padding: 0.9rem 1.2rem;
     margin-bottom: 1.5rem;
-    box-shadow: var(--sv-shadow-xs);
+    font-weight: 500;
 }
 
-.badge { font-weight: 600; letter-spacing: 0.02em; }
-.badge.rounded-pill { padding: 0.45em 0.8em; }
+.badge { font-weight: 600; letter-spacing: 0; }
+
+/* O ponto colorido do selo repete a cor do status (ativo, cancelado, entregue) */
+.badge.rounded-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42em 0.85em 0.42em 0.7em;
+    font-size: 0.76rem;
+}
+
+.badge.rounded-pill::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: currentColor;
+}
 
 /* ---------- Estados vazios e resumo ---------- */
-.empty-state { padding: 4rem 1.5rem; text-align: center; color: var(--sv-muted); }
-.empty-state h2 { font-size: 1.15rem; color: var(--sv-ink); font-weight: 600; }
+.empty-state { padding: 4.5rem 1.5rem; text-align: center; color: var(--sv-muted); }
+.empty-state h2 { font-size: 1.3rem; color: var(--sv-ink); font-weight: 600; }
 
 .stat-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--sv-muted);
+    margin-bottom: 0.15rem;
 }
 
 .stat-value { font-size: 1.05rem; font-weight: 600; }
-.stat-total { font-size: 1.6rem; font-weight: 700; color: var(--sv-total); }
+
+.stat-total {
+    font-family: var(--sv-font-display);
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--sv-total);
+}
 
 /* ---------- Login / logout ---------- */
 .auth-wrap {
@@ -405,31 +531,39 @@ main.container {
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background: linear-gradient(135deg, var(--sv-auth-1) 0%, var(--sv-auth-2) 60%, var(--sv-auth-3) 100%);
+    background:
+        radial-gradient(60rem 38rem at 8% -5%, rgba(94, 234, 212, 0.32), transparent 62%),
+        radial-gradient(48rem 34rem at 100% 105%, rgba(13, 148, 136, 0.7), transparent 62%),
+        var(--sv-auth-base);
 }
 
 .auth-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 430px;
     background: var(--sv-surface);
     color: var(--sv-ink);
-    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: var(--sv-r-xl);
-    padding: 2.5rem 2.25rem;
+    padding: 2.75rem 2.5rem;
     box-shadow: var(--sv-shadow-lg);
 }
 
-.auth-card .brand-logo { width: 3.75rem; height: 3.75rem; }
+.auth-card .brand-logo { width: 4rem; height: 4rem; }
+.auth-card h1 { font-size: 1.6rem; letter-spacing: -0.03em; }
 
-.auth-wrap .theme-toggle-flutuante { position: absolute; top: 1rem; right: 1rem; }
+.auth-wrap .theme-toggle-flutuante { position: absolute; top: 1.25rem; right: 1.25rem; }
 
 /* ---------- Telas pequenas ---------- */
 @media (max-width: 575.98px) {
     main.container { padding-top: 1.5rem !important; }
     .page-header { margin-bottom: 1.5rem; }
+    .page-header h1 { font-size: 1.75rem; }
+    .kpi-value, .stat-total { font-size: 1.8rem; }
     .card-body { padding: 1.25rem; }
-    .table > :not(caption) > * > * { padding: 0.85rem 1rem; }
-    .auth-card { padding: 2rem 1.5rem; }
+    .card-header { padding: 1rem 1.25rem; }
+    .table > :not(caption) > * > * { padding: 0.85rem 0.85rem; }
+    .table > :not(caption) > * > *:first-child { padding-left: 1.25rem; }
+    .table > :not(caption) > * > *:last-child { padding-right: 1.25rem; }
+    .auth-card { padding: 2.25rem 1.5rem; }
 }
 
 /* ---------- Movimento reduzido ---------- */
@@ -454,12 +588,19 @@ main.container {
 
     main.container { padding-top: 0 !important; padding-bottom: 0 !important; }
 
-    .card { box-shadow: none !important; break-inside: avoid; }
-    .btn-primary,
-    .btn-outline-secondary,
-    .alert { box-shadow: none !important; }
+    .card,
+    .kpi,
+    .form-card { box-shadow: none !important; break-inside: avoid; }
+    .btn-primary { box-shadow: none !important; }
     .table-responsive { overflow: visible !important; }
-    .kpi { border-left-width: 4px; }
+
+    /* Garante que os pontos coloridos de indicadores e status saiam no PDF */
+    .kpi-label::before,
+    .badge.rounded-pill::before,
+    .badge {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 
     a { text-decoration: none !important; color: inherit !important; }
 }
